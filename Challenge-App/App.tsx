@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View,  FlatList } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {getCarTruck} from './hooks/getCarTruckData';
+import TruckCard from './components/truckCard';
 
 const queryClient = new QueryClient();
 
@@ -29,9 +30,24 @@ function Main() {
   if (isLoading) return <Text>Loading...</Text>;
   if (error) return <Text>Erro</Text>;
 
+  console.log("TIPO DE DATA:", typeof data);
+  console.log("ARRAY?", Array.isArray(data));
+  console.log("TAMANHO:", carros?.length);
+
   return (
     <View style={styles.container}>
-      <Text>Check console 👀</Text>
+      <FlatList
+      data={carros}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({ item }) => (
+        <TruckCard
+          make={item.make}
+          model={item.model}
+          trim={item.trim}
+          type={item.type}
+        />
+      )}
+    />
     </View>
   );
 }
