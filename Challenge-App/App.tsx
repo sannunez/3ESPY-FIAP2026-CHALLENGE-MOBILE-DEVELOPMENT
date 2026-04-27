@@ -36,9 +36,9 @@ function Main() {
 
   return (
     <View style={styles.container}>
-      <FlatList
+    <FlatList
       data={carros}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <TruckCard
           make={item.make}
