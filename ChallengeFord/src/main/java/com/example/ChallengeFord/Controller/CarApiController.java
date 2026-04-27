@@ -1,7 +1,7 @@
 package com.example.ChallengeFord.Controller;
 
 import com.example.ChallengeFord.Model.CarFilterDTO;
-import com.example.ChallengeFord.Model.CarTruckDTO;
+import com.example.ChallengeFord.Model.CarTruckResponse;
 import com.example.ChallengeFord.Service.CarApiService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,18 +20,12 @@ public class CarApiController {
     }
 
     @GetMapping
-    public List<CarTruckDTO> getAll(
+    public CarTruckResponse getAll(
             CarFilterDTO filter,
             @RequestParam(defaultValue = "1") int page)
     {
-        if (page < 1) {page = 1;}
+        if (page < 1) { page = 1; }
 
         return service.getAll(filter, page);
     }
-//
-//    @GetMapping("/makes")
-//    public List<String> getMakes(){
-//        return service.getAvailableMakes();
-//    }
-
 }

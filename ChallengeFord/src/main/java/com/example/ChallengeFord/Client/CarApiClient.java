@@ -14,7 +14,7 @@ public class CarApiClient {
 
     String BASE_URL = "https://carapi.app/api/bodies/v2?type=truck";
 
-    public List<CarTruckDTO> getTruck(CarFilterDTO filter, int page){
+    public CarTruckResponse getTruckPageWithFilter(CarFilterDTO filter, int page){
 
         StringBuilder url = new StringBuilder(BASE_URL);
 
@@ -32,16 +32,8 @@ public class CarApiClient {
             url.append("&trim=").append(filter.getTrim());
         }
 
-        CarTruckResponse response = restTemplate.getForObject(url.toString(), CarTruckResponse.class);
-        return response.getData();
-    }
-
-    public CarTruckResponse getTruckPage(int page){
-
-        String url = BASE_URL + "&page=" + page;
-
         CarTruckResponse response =
-                restTemplate.getForObject(url, CarTruckResponse.class);
+                restTemplate.getForObject(url.toString(), CarTruckResponse.class);
 
         if (response == null) {
             return new CarTruckResponse();

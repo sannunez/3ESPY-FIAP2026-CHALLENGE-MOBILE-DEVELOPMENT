@@ -18,38 +18,10 @@ public class CarApiService {
         this.client = client;
     }
 
-    public List<CarTruckDTO> getAll(CarFilterDTO filter, int page){
-        return client.getTruck(filter, page);
-
+    public CarTruckResponse getAll(CarFilterDTO filter, int page){
+        return client.getTruckPageWithFilter(filter, page);
     }
 
-//    @Cacheable("makes")
-//    public List<String> getAvailableMakes(){
-//
-//        List<String> makes = new ArrayList<>();
-//
-//        int currentPage = 1;
-//        int totalPages;
-//
-//        do {
-//            CarTruckResponse response = client.getTruckPage(currentPage);
-//
-//            response.getData().forEach(car -> {
-//                if (car.getMake() != null && !car.getMake().isBlank()) {
-//                    makes.add(car.getMake());
-//                }
-//            });
-//
-//            totalPages = response.getCollection().getPages();
-//            currentPage++;
-//
-//            System.out.println("Buscando página: " + currentPage);
-//
-//
-//        } while (currentPage <= totalPages);
-//
-//        return makes.stream().distinct().sorted().toList();
-//    }
 
 
 }
