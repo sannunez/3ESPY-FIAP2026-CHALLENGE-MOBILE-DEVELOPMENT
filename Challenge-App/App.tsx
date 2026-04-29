@@ -1,62 +1,48 @@
 import { StyleSheet, Text, View,  FlatList } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {getCarTruck} from './hooks/getCarTruckData';
-import TruckCard from './components/truckCard';
+import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack"
+
+import CarList from './components/carList'
+import Details from './components/detailsScreen'
+import RangerRaptorCard from './components/rangerRaptorCard';
+import { RootStackParamList } from './navigation/types';
+
+
 
 const queryClient = new QueryClient();
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Main />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name = "CarList"
+            component={CarList}
+            options={{title: "Lista"}}/>
+
+          <Stack.Screen
+            name="Details"
+            component={Details}
+            options={{title: "Detalhes"}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+      {/* <View style={styles.container}>
+        <RangerRaptorCard/>
+        <CarList/>
+      </View> */}
     </QueryClientProvider>
   );
 }
 
-function Main() {
-  const { data, isLoading, error } = getCarTruck();
-
-  console.log("LOADING:", isLoading);
-  console.log("ERROR:", error);
-  console.log("DATA:", data);
-
-  const carros = data?.data;
-  const collection = data?.collection;
-
-  console.log("CARROS:", carros);
-  console.log("COLLECTION:", collection);
-
-  if (isLoading) return <Text>Loading...</Text>;
-  if (error) return <Text>Erro</Text>;
-
-  console.log("TIPO DE DATA:", typeof data);
-  console.log("ARRAY?", Array.isArray(data));
-  console.log("TAMANHO:", carros?.length);
-
-  return (
-    <View style={styles.container}>
-    <FlatList
-      data={carros}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <TruckCard
-          make={item.make}
-          model={item.model}
-          trim={item.trim}
-          type={item.type}
-        />
-      )}
-    />
-    </View>
-  );
-}
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#252525',
     alignItems: 'center',
     justifyContent: 'center',
   },
