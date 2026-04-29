@@ -1,5 +1,6 @@
 package com.example.ChallengeFord.Client;
 
+import com.example.ChallengeFord.Model.CarDetailsResponse;
 import com.example.ChallengeFord.Model.CarFilterDTO;
 import com.example.ChallengeFord.Model.CarTruckDTO;
 import com.example.ChallengeFord.Model.CarTruckResponse;
@@ -40,5 +41,11 @@ public class CarApiClient {
         }
 
         return response;
+    }
+
+    private static final String BASE_DETAILS_URL = "https://carapi.app/api/trims/v2/{id}";
+
+    public CarDetailsResponse getCarDetails(String id) {
+        return restTemplate.getForObject(BASE_DETAILS_URL, CarDetailsResponse.class, id);
     }
 }

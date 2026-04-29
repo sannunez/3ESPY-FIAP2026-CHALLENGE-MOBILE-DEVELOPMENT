@@ -1,12 +1,10 @@
 package com.example.ChallengeFord.Controller;
 
+import com.example.ChallengeFord.Model.CarDetailsDTO;
 import com.example.ChallengeFord.Model.CarFilterDTO;
 import com.example.ChallengeFord.Model.CarTruckResponse;
 import com.example.ChallengeFord.Service.CarApiService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,10 @@ public class CarApiController {
         if (page < 1) { page = 1; }
 
         return service.getAll(filter, page);
+    }
+
+    @GetMapping("/{id}")
+    public CarDetailsDTO getCarDetails(@PathVariable String id){
+        return service.getCarDetails(id);
     }
 }
