@@ -1,9 +1,10 @@
 package com.example.ChallengeFord.Model;
 
+
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
@@ -13,7 +14,6 @@ public class CarDetailsResponse {
     private String make;
     private String model;
     private String trim;
-    private String type;
 
     // Motor / performance
     private List<Engine> engines;
@@ -21,23 +21,45 @@ public class CarDetailsResponse {
     // Carroceria
     private List<Body> bodies;
 
-    // preço
+    // Preco
     private Integer msrp;
+
+    // Transmicao
+    private List<Transmission> transmissions;
+
+    // Tipo de Direcao
+    @JsonProperty("drive_types")
+    private List<DriveType> driveTypes;
 
     // Classe Internas =>
     @Getter
     @Setter
     public static class Engine {
 
+        @JsonProperty("engine_type")
         private String engineType;
-        private Double size;
+
+        private String size;
+
         private String cylinders;
 
+        @JsonProperty("horsepower_hp")
         private Integer horsepowerHp;
-        private Integer torqueFtLbs;
 
-        private String transmission;
-        private String driveType;
+        @JsonProperty("torque_ft_lbs")
+        private Integer torqueFtLbs;
+    }
+
+    @Getter
+    @Setter
+    public static class Transmission {
+        private String description;
+    }
+
+    @Getter
+    @Setter
+    public static class DriveType {
+        private String description;
     }
 
     @Getter

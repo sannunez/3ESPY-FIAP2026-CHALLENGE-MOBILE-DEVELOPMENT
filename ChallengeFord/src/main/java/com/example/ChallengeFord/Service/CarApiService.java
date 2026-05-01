@@ -2,11 +2,8 @@ package com.example.ChallengeFord.Service;
 
 import com.example.ChallengeFord.Client.CarApiClient;
 import com.example.ChallengeFord.Model.*;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CarApiService {
@@ -37,21 +34,36 @@ public class CarApiService {
         dto.setMake(api.getMake());
         dto.setModel(api.getModel());
         dto.setTrim(api.getTrim());
-        dto.setType(api.getType());
 
-        var engine = api.getEngines().get(0);
+        // ENGINE
+        if (api.getEngines() != null && !api.getEngines().isEmpty()) {
+            var engine = api.getEngines().get(0);
 
-        dto.setMotor(
-                engine.getEngineType() + " " +
-                        engine.getSize() + "L " +
-                        engine.getCylinders()
-        );
+            dto.setMotor(
+                    engine.getEngineType() + " " +
+                            engine.getSize() + "L " +
+                            engine.getCylinders()
+            );
 
-        dto.setPotencia(engine.getHorsepowerHp());
-        dto.setTorqueMax(engine.getTorqueFtLbs());
+            dto.setPotencia(engine.getHorsepowerHp());
+            dto.setTorqueMax(engine.getTorqueFtLbs());
+        }
 
-        dto.setTransmissao(engine.getTransmission());
-        dto.setTracao(engine.getDriveType());
+        // TYPE
+        if(api.getBodies() != null && !api.getBodies().isEmpty()) {
+            dto.setType(api.getBodies().get(0).getType());
+        }
+
+        // TRANSMISSION
+        if (api.getTransmissions() != null && !api.getTransmissions().isEmpty()) {
+            dto.setTransmissao(api.getTransmissions().get(0).getDescription());
+        }
+
+        // DRIVE TYPE
+        if (api.getDriveTypes() != null && !api.getDriveTypes().isEmpty()) {
+            dto.setTracao(api.getDriveTypes().get(0).getDescription());
+        }
+
 
         dto.setPreco(api.getMsrp());
 
@@ -63,6 +75,7 @@ public class CarApiService {
         dto.setModosAmortecedor(null);
         dto.setFarois(null);
         dto.setRodasPneus(null);
+
 
         return dto;
     }
