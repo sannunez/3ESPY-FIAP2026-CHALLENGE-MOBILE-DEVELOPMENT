@@ -13,21 +13,39 @@ export default function CarList({navigation,} : {navigation: CarListNav}){
     const carros = data?.data;
     const collection = data?.collection;
 
+    const makes = ["Ford", "Chevrolet", "Marca"]
+
+
     return(
-        <View style={styles.container}>
-            <FlatList
-            data={carros}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <TruckCard
-                make={item.make}
-                model={item.model}
-                trim={item.trim}
-                type={item.type}
-                onPress={() => navigation.navigate("Details", { id: item.id })}
+        
+        <View >
+            <View>
+                {makes.map((make) => (
+                    <Pressable
+                        key={make}
+                        onPress={() => console.log(`${make} selecionada`)}
+                        style={styles.checkbox}
+                    >
+                        <Text>{make}</Text>
+                    </Pressable>
+                ))
+                }
+                </View>
+            <View style={styles.container}>
+                <FlatList
+                data={carros}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <TruckCard
+                    make={item.make}
+                    model={item.model}
+                    trim={item.trim}
+                    type={item.type}
+                    onPress={() => navigation.navigate("Details", { id: item.id })}
+                    />
+                )}
                 />
-            )}
-            />
+            </View>
         </View>
     )
 }
@@ -37,5 +55,11 @@ const styles = StyleSheet.create({
         height: 350,
         alignItems:"center",
         margin: 10
-    }
+    },
+    checkbox: {
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 5
+  }
 })
