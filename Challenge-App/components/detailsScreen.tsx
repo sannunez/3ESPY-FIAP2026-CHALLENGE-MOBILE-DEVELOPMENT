@@ -1,8 +1,8 @@
-import { Text, View, StyleSheet} from "react-native"
+import { Text, View, ImageBackground, StyleSheet} from "react-native"
 import { RouteProp } from "@react-navigation/native"
-import { LinearGradient } from "expo-linear-gradient"
 import { RootStackParamList } from "../navigation/types"
 import { getCarDetails } from "../hooks/getCarDetail"
+import { useFonts, Montserrat_500Medium, Montserrat_700Bold, Montserrat_700Bold_Italic} from '@expo-google-fonts/montserrat';
 
 type DetailsRoute = RouteProp<RootStackParamList, "Details">
 
@@ -10,6 +10,13 @@ export default function Details({route,}: {route: DetailsRoute}) {
     const { id } = route.params
 
     const { data, isLoading } = getCarDetails(id)
+    
+    // Fontes
+    const [fontsLoaded] = useFonts({
+        Montserrat_500Medium,
+        Montserrat_700Bold,
+        Montserrat_700Bold_Italic
+    });
 
     if (isLoading) {
         return (
@@ -19,78 +26,73 @@ export default function Details({route,}: {route: DetailsRoute}) {
         )
     }
 
+    if (!fontsLoaded) {
+        return null;
+    }    
+
     return (
         <View style={styles.container}>
             <View>
-                <Text style={styles.header_title}>VEÍCULO</Text>
-                <View>
-                    <Text>Marca: {data?.make ?? "Não Disponível"}</Text>
-                    <Text>Modelo: {data?.model ?? "Não Disponível"}</Text>
-                    <Text>Versão: {data?.trim ?? "Não Disponível"}</Text>
-                    <Text>Tipo: {data?.type ?? "Não Disponível"}</Text>
+                <View style={styles.header}>
+                    <Text style={styles.header_title}>VEÍCULO |</Text>
+                    <Text style={styles.header_text}>{data?.make ?? "Não Disponível"}</Text>
+                    <Text style={styles.header_text}>{data?.model ?? "Não Disponível"}</Text>
+                </View>
+                <View style={styles.TypeNTrim}>
+                    <Text style={styles.header_text}>Versão: {data?.trim ?? "Não Disponível"}</Text>
+                    <Text style={styles.header_text}>Tipo: {data?.type ?? "Não Disponível"}</Text>
                 </View>
             </View>
             
-            <LinearGradient
-                colors={['#1b1b1b',  '#3d3a3a', '#1b1b1b']}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                style={styles.category_box}
+            <ImageBackground
+                source={require('../assets/DT_DESEMPENHO.png')}
+                style={styles.background}
+                resizeMode="cover"
             >
-                <Text style={[styles.texts, styles.h1]}>
-                    DESEMPENHO
-                </Text>
-
-                <View>
+                <View style={styles.card}>
                     <Text style={styles.texts}>Motor: {data?.motor ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Potência: {data?.potencia ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Torque: {data?.torqueMax ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>0 a 100/h: {data?.zeroACem ?? "Não Disponível"}</Text>
                 </View>
-            </LinearGradient>
+            </ImageBackground>
 
-            <LinearGradient
-                colors={['#1b1b1b',  '#3d3a3a', '#1b1b1b']}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                style={styles.category_box}
+            <ImageBackground
+                source={require('../assets/DT_MECANICA.png')}
+                style={styles.background}
+                resizeMode="cover"
             >
-                <Text style={[styles.texts, styles.h1]}>MECÂNICA</Text>
-                <View>
+                <View style={styles.card}>
                     <Text style={styles.texts}>Transmissão: {data?.transmissao ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Tração: {data?.tracao ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Amortecedores: {data?.amortecedores ?? "Não Disponível"}</Text>
                 </View>
-            </LinearGradient>
+            </ImageBackground>
 
-            <LinearGradient
-                colors={['#1b1b1b',  '#3d3a3a', '#1b1b1b']}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                style={styles.category_box}
+            <ImageBackground
+                source={require('../assets/DT_CONFIGURACOES.png')}
+                style={styles.background}
+                resizeMode="cover"
             >
-                <Text style={[styles.texts, styles.h1]}>CONFIGURAÇÕES</Text>
-                <View>
+                <View style={styles.card}>
                     <Text style={styles.texts}>Modos de Condução: {data?.modosConducao ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Modos de Volante: {data?.modosVolante ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Modos de Escapamento: {data?.modosEscapamento ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Modos de Amortecedor: {data?.modosAmortecedor ?? "Não Disponível"}</Text>
                 </View>
-            </LinearGradient>
+            </ImageBackground>
 
-            <LinearGradient
-                colors={['#1b1b1b',  '#3d3a3a', '#1b1b1b']}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                style={styles.category_box}
+            <ImageBackground
+                source={require('../assets/DT_OUTROS.png')}
+                style={styles.background}
+                resizeMode="cover"
             >
-                <Text style={[styles.texts, styles.h1]}>OUTROS</Text>
-                <View>
+                <View style={styles.card}>
                     <Text style={styles.texts}>Faróis: {data?.farois ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Rodas e Pneus: {data?.rodasPneus ?? "Não Disponível"}</Text>
                     <Text style={styles.texts}>Preço: {data?.preco ?? "Não Disponível"}</Text>
                 </View>
-            </LinearGradient>
+            </ImageBackground>
         </View>
     )
 }
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         width: '100%',
+        height: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -106,28 +109,51 @@ const styles = StyleSheet.create({
 
     },
     header: {
-
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 15,
+        gap: 3
     },
     header_title: {
+        color: '#fff',
+        fontSize: 28,
+        fontFamily: 'Montserrat_700Bold',
 
     },
-    category_box: {
+    header_text: {
+        color: '#fff',
+        fontSize: 15,
+        fontFamily: 'Montserrat_500Medium'
+
+    },
+    TypeNTrim: {
+        flexDirection: 'row',
+        gap: 10,
+        paddingBottom: 15,
+    },
+    card: {
+        height: 120,
+        justifyContent: 'center',
+        paddingTop: 10
+    },
+    background: {
         width: 360,
         margin: 10,
         padding: 10,
         borderRadius: 10,
-        borderColor: '#383636',
-        borderWidth: 2
+        overflow: 'hidden'
     },
     texts: {
         color: '#fff',
-        fontWeight: 'bold'
+        flexWrap: 'wrap',
+        marginHorizontal: 10,
+        fontFamily: 'Montserrat_500Medium',
+        fontSize: 12
     },
     h1:{
         fontSize: 22,
-        fontWeight: 'bold',
-        fontStyle: 'italic',
-        textDecorationLine: 'underline',
-        color: '#135eff'
+        fontFamily: 'Montserrat_700Bold_Italic',
+        color: '#056aee'
     }
 });
