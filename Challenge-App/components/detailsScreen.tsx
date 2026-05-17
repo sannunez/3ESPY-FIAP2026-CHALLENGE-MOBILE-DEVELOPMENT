@@ -9,8 +9,8 @@ type DetailsRoute = RouteProp<RootStackParamList, "Details">
 export default function Details({route,}: {route: DetailsRoute}) {
     const { id } = route.params
 
-    const { data, isLoading } = getCarDetails(id)
-    
+    const { data, isLoading, error } = getCarDetails(id)
+
     // Fontes
     const [fontsLoaded] = useFonts({
         Montserrat_500Medium,
@@ -22,6 +22,15 @@ export default function Details({route,}: {route: DetailsRoute}) {
         return (
             <View>
                 <Text>Carregando...</Text>
+            </View>
+        )
+    }
+
+    // Mensagem genérica de erro — evita expor detalhes da resposta da API ou erros internos ao usuário
+    if (error) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#171818' }}>
+                <Text style={{ color: '#888', fontSize: 14 }}>Não foi possível carregar os detalhes.</Text>
             </View>
         )
     }
