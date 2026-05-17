@@ -7,11 +7,11 @@ export default function ReleaseScreen(){
             Montserrat_400Regular,
         });
 
-  const fadeAnim = useRef(new Animated.Value(0)).current
-  const translateY = useRef(new Animated.Value(40)).current
-  const scale = useRef(new Animated.Value(0.95)).current
+    const fadeAnim = useRef(new Animated.Value(0)).current
+    const translateY = useRef(new Animated.Value(40)).current
+    const scale = useRef(new Animated.Value(0.95)).current
 
-  useEffect(() => {
+    useEffect(() => {
 
     Animated.parallel([
 

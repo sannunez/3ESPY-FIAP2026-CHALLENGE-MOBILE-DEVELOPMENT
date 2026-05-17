@@ -1,11 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { TabParamList } from "../types/navigation";
 
 import CarList from "../screens/carList/carList";
 import Details from "../screens/details/detailsScreen";
-
-import { TabParamList } from "../types/navigation";
-import ReleaseScreen from "../screens/home/ReleaseScreen";
+import ReleaseScreen from "../screens/ReleaseScreen/ReleaseScreen";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 

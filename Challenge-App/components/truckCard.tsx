@@ -1,5 +1,5 @@
-import {View, Text, Pressable, StyleSheet} from 'react-native';
-
+import {View, Text, Pressable, StyleSheet, ImageBackground} from 'react-native';
+import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 interface cardProps {
     make: string,
     model: string,
@@ -9,22 +9,30 @@ interface cardProps {
 }
 
 export default function TruckCard ({make, model, trim, type, onPress} : cardProps) {
+    const [fontsLoaded] = useFonts({
+            Montserrat_400Regular,
+            Montserrat_700Bold
+        });
+    
     return(
+    <ImageBackground
+        source={require('../assets/CarListCard.png')}
+        resizeMode='cover'
+    >
     <View style={styles.container}>
         <View>
             <View style={styles.carInfos}>
-                <Text style={styles.carInfoText}>Marca: {make} </Text>
-                <Text style={styles.carInfoText}>Modelo: {model} </Text>
-            </View>
-            <View style={styles.carInfos}>
-                <Text style={styles.carInfoSubText}>Versão: {trim} </Text>
-                <Text style={styles.carInfoSubText}>Tipo: {type} </Text>
+                <Text style={[styles.cardText, {color: '#000000'}]}>{make} </Text>
+                <Text style={[styles.cardText, {color: '#fff'}]}>{model} </Text>
+                <Text style={[styles.cardText, {color: '#000000'}]}>{trim} </Text>
+                <Text style={[styles.cardText, {color: '#fff'}]}>{type} </Text>
             </View>
         </View>
         <Pressable onPress={onPress}>
-            <Text style={styles.about}>sobre</Text>
+            <Text style={styles.about}>SABER MAIS</Text>
         </Pressable>
     </View>
+    </ImageBackground>
     )
     
 }
@@ -32,33 +40,30 @@ export default function TruckCard ({make, model, trim, type, onPress} : cardProp
 const styles = StyleSheet.create({
     container: {
         display: "flex",
-        width: 350,
-        backgroundColor: "#212022",
-        margin: 6,
-        padding: 10,
-        borderRadius: 10,
+        width: 330,
+        height: 135,
+        alignItems: 'center'
     },
     carInfos: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between"
-
-    },
-    carInfoText: {
-        fontSize: 16,
-        color: "#fff",
-        
-    },
-    carInfoSubText: {
-        fontSize: 12,
-        color: "#fff"
+        width:250,
+        marginLeft: 90,
+        marginTop: 14,
     },
     about: {
         color: "#fff",
-        flex: 1,
+        backgroundColor:'#0E63EE',
         textAlign: "center",
-        textDecorationLine: "underline",
-        margin: 5
+        fontFamily: 'Montserrat_700Bold',
+        width: 100,
+        borderRadius: 5,
+        marginTop: 5
+      
+
+    },
+    cardText: {
+        color: '#000000',
+        fontFamily: 'Montserrat_400Regular',
+        fontSize: 14
     }
 
-    })
+})
