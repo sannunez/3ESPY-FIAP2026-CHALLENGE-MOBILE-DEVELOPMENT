@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Pressable, StyleSheet, FlatList,Image } from 'react-native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { getCarTruck } from '../../hooks/getCarTruckData';
 import { TabParamList } from '../../types/navigation';
@@ -26,15 +26,54 @@ export default function CarList({ navigation }: Props) {
     const [open, setOpen] = useState(false)
 
     const makes = {
-        Chevrolet: "?make=Chevrolet",
-        Ford: "?make=Ford",
-        GMC: "?make=GMC",
-        Honda: "?make=Honda",
-        Jeep: "?make=Jeep",
-        Nissan: "?make=Nissan",
-        Ram: "?make=Ram",
-        Toyota: "?make=Toyota"
+        Chevrolet: {
+            filter: "?make=Chevrolet",
+            logo: require("../../assets/chevroletLogo.png")
+        },
+        Ford: {
+            filter: "?make=Ford",
+            logo: require("../../assets/fordLogo.png")
+        },
+        GMC: {
+            filter: "?make=GMC",
+            logo: require("../../assets/gmcLogo.png")
+        
+        },
+        Honda: {
+            filter: "?make=Honda",
+            logo: require("../../assets/hondaLogo.png")
+        },
+        Jeep: {
+            filter: "?make=Jeep",
+            logo: require("../../assets/jeepLogo.png")
+        },
+        Nissan: {
+            filter: "?make=Nissan",
+            logo: require("../../assets/nissanLogo.png")
+        },
+        Ram: {
+            filter: "?make=Ram",
+            logo: require("../../assets/RAMLogo.png")
+        },
+        Toyota: {
+            filter: "?make=Toyota",
+            logo: require("../../assets/toyotaLogo.png")
+        }
     }
+
+    // const makes = {
+
+    //     Ford: {
+    //         filter: "?make=Ford",
+    //         logo: require("../assets/logos/ford.png")
+    //     },
+
+    //     Toyota: {
+    //         filter: "?make=Toyota",
+    //         logo: require("../assets/logos/toyota.png")
+    //     }
+
+    // }
 
     return (
         <View style={styles.container}>
@@ -59,10 +98,16 @@ export default function CarList({ navigation }: Props) {
                     {Object.entries(makes).map(([label, value]) => (
                     <Pressable
                         key={label}
-                        onPress={() => setFilter(value)}
+                        onPress={() => setFilter(value.filter)}
                         style={styles.checkbox} 
                     >
-                        <Text style={{color: '#056aee', fontFamily: 'Montserrat_700Bold', fontSize: 12}}>{label}</Text>
+                        <Image
+                        source={value.logo}
+                        style={{
+                            width: 30,
+                            height: 30
+                        }}
+                        />
                     </Pressable>
                 ))}
                 </View>
@@ -110,10 +155,7 @@ const styles = StyleSheet.create({
     },
 
     checkbox: {
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 5,
-        width: 90,
+        width: 70,
         alignItems: 'center'
         
     },
