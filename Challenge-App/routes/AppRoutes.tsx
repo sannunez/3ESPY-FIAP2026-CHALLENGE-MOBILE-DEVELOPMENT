@@ -5,6 +5,7 @@ import CarList from "../screens/carList/carList";
 import Details from "../screens/details/detailsScreen";
 
 import { TabParamList } from "../types/navigation";
+import ReleaseScreen from "../screens/home/ReleaseScreen";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -26,10 +27,15 @@ export default function AppRoutes() {
                     tabBarInactiveTintColor: '#777',
 
                     sceneStyle: {
-                        backgroundColor: '#171818'
+                        backgroundColor: '#1d1f1f'
                     }
                 }}
             >
+                <Tab.Screen
+                    name = "Releases"
+                    component = {ReleaseScreen}
+                />
+
                 <Tab.Screen
                     name="Cars"
                     component={CarList}
