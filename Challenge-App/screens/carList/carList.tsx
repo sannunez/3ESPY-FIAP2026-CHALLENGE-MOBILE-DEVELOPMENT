@@ -1,12 +1,13 @@
-import { View, Text, Pressable, StyleSheet, FlatList,Image } from 'react-native';
+import { View, Text, Pressable, StyleSheet, FlatList, Image, Linking } from 'react-native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { getCarTruck } from '../../hooks/getCarTruckData';
 import { TabParamList } from '../../types/navigation';
 import { useCar } from '../../context/CarProvider';
 import { useState } from 'react';
-import { useFonts, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import { useFonts, Montserrat_700Bold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 
 import TruckCard from '../../components/truckCard';
+import { CarTruckDTO } from '../../interface/CarTruckDTO';
 
 type CarListNav = BottomTabNavigationProp<TabParamList, "Cars">;
 
@@ -60,26 +61,36 @@ export default function CarList({ navigation }: Props) {
             logo: require("../../assets/toyotaLogo.png")
         }
     }
+    
+    const renderCar = ({item}: {item: CarTruckDTO}) => (
 
-    // const makes = {
+    <TruckCard
+        make={item.make}
+        model={item.model}
+        trim={item.trim}
+        type={item.type}
+        onPress={() => {
 
-    //     Ford: {
-    //         filter: "?make=Ford",
-    //         logo: require("../assets/logos/ford.png")
-    //     },
+            setSelectedCarId(item.id);
 
-    //     Toyota: {
-    //         filter: "?make=Toyota",
-    //         logo: require("../assets/logos/toyota.png")
-    //     }
+            navigation.navigate("Details");
+        }}
+    />
 
-    // }
+    )
+
+    const [fontsLoaded] = useFonts({
+        Montserrat_400Regular,
+        Montserrat_700Bold
+    })
+
+    if (!fontsLoaded) {
+        return null
+    }
 
     return (
         <View style={styles.container}>
-            <Text>
                 
-            </Text>
 
             <Pressable onPress={() => setOpen(!open)}>
                 <Text style={{ 
@@ -89,7 +100,7 @@ export default function CarList({ navigation }: Props) {
                         textDecorationLine: 'underline',
                         marginBottom: 5,
                         fontSize: 16}}>
-                    PESQUISAR POR MARCAS
+                    PROCURAR POR MARCAS
                 </Text>
             </Pressable>
 
@@ -120,21 +131,31 @@ export default function CarList({ navigation }: Props) {
                         gap: 20
                     }}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <TruckCard
-                            make={item.make}
-                            model={item.model}
-                            trim={item.trim}
-                            type={item.type}
-                            onPress={() => {
-                                setSelectedCarId(item.id);
-
-                                navigation.navigate("Details");
-                            }}
-                        />
-                    )}
+                    renderItem={renderCar}
+                    removeClippedSubviews
+                    initialNumToRender={5}
+                    windowSize={5}
+                    maxToRenderPerBatch={5}
                 />
             </View>
+        <Pressable
+            onPress={() =>
+                Linking.openURL(
+                    "https://www.youtube.com/watch?v=3nW3UoOxV3k"
+                )
+            }
+        >
+
+            <Image
+                source={require("../../assets/RangerRaptorTrailer.gif")}
+                style={{
+                    width: 350,
+                    height: 200,
+                    borderRadius: 5
+                }}
+            />
+
+        </Pressable>
         </View>
     );
 }

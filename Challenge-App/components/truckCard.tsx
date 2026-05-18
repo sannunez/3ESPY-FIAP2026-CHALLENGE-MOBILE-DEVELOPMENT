@@ -1,5 +1,6 @@
 import {View, Text, Pressable, StyleSheet, ImageBackground} from 'react-native';
-import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import { memo } from 'react';
+
 interface cardProps {
     make: string,
     model: string,
@@ -8,11 +9,7 @@ interface cardProps {
     onPress: () => void;
 }
 
-export default function TruckCard ({make, model, trim, type, onPress} : cardProps) {
-    const [fontsLoaded] = useFonts({
-            Montserrat_400Regular,
-            Montserrat_700Bold
-        });
+function TruckCard ({make, model, trim, type, onPress} : cardProps) {
     
     return(
     <ImageBackground
@@ -67,3 +64,5 @@ const styles = StyleSheet.create({
     }
 
 })
+
+export default memo(TruckCard)
