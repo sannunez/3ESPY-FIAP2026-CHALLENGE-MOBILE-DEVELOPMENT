@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, FlatList, Image, Linking } from 'react-native';
+import { View, Text, Pressable, StyleSheet, FlatList, Image, Linking, ScrollView } from 'react-native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { getCarTruck } from '../../hooks/getCarTruckData';
 import { TabParamList } from '../../types/navigation';
@@ -61,7 +61,7 @@ export default function CarList({ navigation }: Props) {
             logo: require("../../assets/toyotaLogo.png")
         }
     }
-    
+
     const renderCar = ({item}: {item: CarTruckDTO}) => (
 
     <TruckCard
@@ -88,17 +88,16 @@ export default function CarList({ navigation }: Props) {
         return null
     }
 
+
     return (
         <View style={styles.container}>
-                
-
+            
             <Pressable onPress={() => setOpen(!open)}>
                 <Text style={{ 
                         color: "#fff", 
                         marginTop: 20, 
                         fontFamily: 'Montserrat_700Bold', 
                         textDecorationLine: 'underline',
-                        marginBottom: 5,
                         fontSize: 16}}>
                     PROCURAR POR MARCAS
                 </Text>
@@ -107,20 +106,25 @@ export default function CarList({ navigation }: Props) {
             {open && (
                 <View style={styles.options}>
                     {Object.entries(makes).map(([label, value]) => (
-                    <Pressable
-                        key={label}
-                        onPress={() => setFilter(value.filter)}
-                        style={styles.checkbox} 
-                    >
-                        <Image
-                        source={value.logo}
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                        />
-                    </Pressable>
-                ))}
+                        <Pressable
+                            key={label}
+                            onPress={() => setFilter(value.filter)}
+                            style={[
+                                styles.checkbox,
+                                {
+                                    opacity: filter === value.filter ? 1 : 0.3
+                                }
+                            ]}
+                        >
+                            <Image
+                                source={value.logo}
+                                style={{
+                                    width: 30,
+                                    height: 30
+                                }}
+                            />
+                        </Pressable>
+                    ))}
                 </View>
             )}
 
@@ -138,24 +142,37 @@ export default function CarList({ navigation }: Props) {
                     maxToRenderPerBatch={5}
                 />
             </View>
-        <Pressable
-            onPress={() =>
-                Linking.openURL(
-                    "https://www.youtube.com/watch?v=3nW3UoOxV3k"
-                )
-            }
-        >
+            <View style={{
+                    marginTop: 10,
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
+                <Text style={{fontFamily: 'Montserrat_400Regular', fontSize: 12, color: '#FFF'}}>
+                    CONFIRA O LANÇAMENTO DA NOVA RANGER RAPTOR
+                </Text>
+            </View>
+                <Pressable   
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                    onPress={() =>
+                        Linking.openURL(
+                            "https://www.youtube.com/watch?v=3nW3UoOxV3k"
+                        )
+                    }
+                >
+                
+                <Image
+                    source={require("../../assets/RangerRaptorTrailer.gif")}
+                    style={{
+                        width: 310,
+                        height: 170,
+                        borderRadius: 5,
 
-            <Image
-                source={require("../../assets/RangerRaptorTrailer.gif")}
-                style={{
-                    width: 350,
-                    height: 200,
-                    borderRadius: 5
-                }}
-            />
-
-        </Pressable>
+                    }}
+                />
+                </Pressable>
         </View>
     );
 }
@@ -164,14 +181,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 10
     },
     
     carOptions: {
         display: 'flex',
         height: 500,
         alignItems: "center",
-        marginVertical: 20
+        marginVertical: 10
         
     },
 
