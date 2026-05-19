@@ -22,6 +22,14 @@ export default function Details() {
         Montserrat_700Bold_Italic
     });
 
+    //  Formatação preço
+    const precoFormatado = data?.preco
+    ? new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'USD'
+    }).format(Number(data.preco))
+    : "Não Disponível";
+
     if (!selectedCarId) {
         return (
             <View style={styles.container}>
@@ -154,7 +162,7 @@ export default function Details() {
                     </Text>
 
                     <Text style={styles.texts}>
-                        Preço: {data?.preco ?? "Não Disponível"}
+                        Preço: {precoFormatado}
                     </Text>
                 </View>
             </ImageBackground>
