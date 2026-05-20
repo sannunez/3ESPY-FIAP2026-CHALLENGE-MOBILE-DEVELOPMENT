@@ -4,4 +4,5 @@ export interface CarTruckDTO{
     model: string;
     trim: string;
     type: string;
+    year: number;
 }

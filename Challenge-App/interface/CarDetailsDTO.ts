@@ -17,4 +17,5 @@ export interface CarDetailsDTO{
     modosAmortecedor: string[];
     farois: string;
     rodasPneus: string;
+    year: number;
 }

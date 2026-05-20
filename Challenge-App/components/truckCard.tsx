@@ -6,10 +6,11 @@ interface cardProps {
     model: string,
     trim: string,
     type: string,
+    year: number,
     onPress: () => void;
 }
 
-function TruckCard ({make, model, trim, type, onPress} : cardProps) {
+function TruckCard ({make, model, trim, type, year, onPress} : cardProps) {
     
     return(
     <ImageBackground
@@ -20,7 +21,7 @@ function TruckCard ({make, model, trim, type, onPress} : cardProps) {
         <View>
             <View style={styles.carInfos}>
                 <Text style={[styles.cardText, {color: '#000000'}]}>{make} </Text>
-                <Text style={[styles.cardText, {color: '#fff'}]}>{model} </Text>
+                <Text style={[styles.cardText, {color: '#fff'}]}>{model} ({year})</Text>
                 <Text style={[styles.cardText, {color: '#000000'}]}>{trim} </Text>
                 <Text style={[styles.cardText, {color: '#fff'}]}>{type} </Text>
             </View>

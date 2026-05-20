@@ -69,6 +69,7 @@ export default function CarList({ navigation }: Props) {
         model={item.model}
         trim={item.trim}
         type={item.type}
+        year={item.year}
         onPress={() => {
 
             setSelectedCarId(item.id);

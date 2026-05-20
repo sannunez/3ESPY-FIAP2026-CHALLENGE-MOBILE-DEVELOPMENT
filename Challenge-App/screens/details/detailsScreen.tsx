@@ -164,6 +164,10 @@ export default function Details() {
                     <Text style={styles.texts}>
                         Preço: {precoFormatado}
                     </Text>
+
+                    <Text style={styles.texts}>
+                        Ano: {data?.year ?? "Não Disponível"}
+                    </Text>
                 </View>
             </ImageBackground>
 
