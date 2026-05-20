@@ -3,7 +3,9 @@ package com.example.ChallengeFord.Service;
 import com.example.ChallengeFord.Client.CarApiClient;
 import com.example.ChallengeFord.Model.*;
 import org.springframework.stereotype.Service;
-
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CarApiService {
@@ -14,7 +16,14 @@ public class CarApiService {
     }
 
     public CarTruckResponse getAll(CarFilterDTO filter, int page){
-        return client.getTruckPageWithFilter(filter, page);
+
+        CarTruckResponse response = client.getTruckPageWithFilter(filter, page);
+
+        List<CarTruckDTO> carrosFiltrados = removeDuplicados(response.getData());
+
+        response.setData(carrosFiltrados);
+
+        return response;
     }
 
     public CarDetailsDTO getCarDetails(String id){
@@ -79,6 +88,25 @@ public class CarApiService {
 
 
         return dto;
+    }
+
+    private List<CarTruckDTO> removeDuplicados(List<CarTruckDTO> cars){
+
+        Set<String> seen = new HashSet<>();
+
+        return cars.stream()
+                .filter(car -> {
+
+                    String key =
+                                    car.getYear() + "-" +
+                                    car.getMake().trim().toLowerCase() + "-" +
+                                    car.getModel().trim().toLowerCase() + "-" +
+                                    car.getTrim().trim().toLowerCase() + "-" +
+                                    car.getType().trim().toLowerCase();
+
+                    return seen.add(key);
+                })
+                .toList();
     }
 
 }

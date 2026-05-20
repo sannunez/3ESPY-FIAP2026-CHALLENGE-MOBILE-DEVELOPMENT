@@ -1,105 +1,120 @@
-import { View, Text, Pressable, StyleSheet, FlatList, Image, Linking, ScrollView } from 'react-native';
+import { View, Text, Pressable, StyleSheet, FlatList, Image, Linking } from 'react-native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { getCarTruck } from '../../hooks/getCarTruckData';
 import { TabParamList } from '../../types/navigation';
 import { useCar } from '../../context/CarProvider';
 import { useState } from 'react';
-import { useFonts, Montserrat_700Bold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
+
+import {useFonts,Montserrat_700Bold,Montserrat_400Regular} from '@expo-google-fonts/montserrat';
 
 import TruckCard from '../../components/truckCard';
+
 import { CarTruckDTO } from '../../interface/CarTruckDTO';
 
-type CarListNav = BottomTabNavigationProp<TabParamList, "Cars">;
+type CarListNav =
+    BottomTabNavigationProp<TabParamList, "Cars">;
 
 type Props = {
     navigation: CarListNav;
 };
 
 export default function CarList({ navigation }: Props) {
-    const [filter, setFilter] = useState("")
-    const { data } = getCarTruck(filter);
+
+    const [filter, setFilter] = useState("");
+
+    const {data, fetchNextPage, hasNextPage, isFetchingNextPage} = getCarTruck(filter);
 
     const { setSelectedCarId } = useCar();
 
-    const carros = data?.data;
+    const carros =
+        data?.pages.flatMap(page => page.data) ?? [];
 
-    
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     const makes = {
         Chevrolet: {
-            filter: "?make=Chevrolet",
+            filter: "make=Chevrolet",
             logo: require("../../assets/chevroletLogo.png")
         },
+
         Ford: {
-            filter: "?make=Ford",
+            filter: "make=Ford",
             logo: require("../../assets/fordLogo.png")
         },
+
         GMC: {
-            filter: "?make=GMC",
+            filter: "make=GMC",
             logo: require("../../assets/gmcLogo.png")
-        
         },
+
         Honda: {
-            filter: "?make=Honda",
+            filter: "make=Honda",
             logo: require("../../assets/hondaLogo.png")
         },
+
         Jeep: {
-            filter: "?make=Jeep",
+            filter: "make=Jeep",
             logo: require("../../assets/jeepLogo.png")
         },
+
         Nissan: {
-            filter: "?make=Nissan",
+            filter: "make=Nissan",
             logo: require("../../assets/nissanLogo.png")
         },
+
         Ram: {
-            filter: "?make=Ram",
+            filter: "make=Ram",
             logo: require("../../assets/RAMLogo.png")
         },
+
         Toyota: {
-            filter: "?make=Toyota",
+            filter: "make=Toyota",
             logo: require("../../assets/toyotaLogo.png")
         }
-    }
+    };
 
     const renderCar = ({item}: {item: CarTruckDTO}) => (
 
-    <TruckCard
-        make={item.make}
-        model={item.model}
-        trim={item.trim}
-        type={item.type}
-        year={item.year}
-        onPress={() => {
+        <TruckCard
+            make={item.make}
+            model={item.model}
+            trim={item.trim}
+            type={item.type}
+            year={item.year}
+            onPress={() => {
 
-            setSelectedCarId(item.id);
+                setSelectedCarId(item.id);
 
-            navigation.navigate("Details");
-        }}
-    />
-
-    )
+                navigation.navigate("Details");
+            }}
+        />
+    );
 
     const [fontsLoaded] = useFonts({
         Montserrat_400Regular,
         Montserrat_700Bold
-    })
+    });
 
     if (!fontsLoaded) {
-        return null
+        return null;
     }
 
-
     return (
+
         <View style={styles.container}>
-            
-            <Pressable onPress={() => setOpen(!open)}>
-                <Text style={{ 
-                        color: "#fff", 
-                        marginTop: 20, 
-                        fontFamily: 'Montserrat_700Bold', 
+
+            <Pressable
+                onPress={() => setOpen(!open)}
+            >
+                <Text
+                    style={{
+                        color: "#fff",
+                        marginTop: 20,
+                        fontFamily: 'Montserrat_700Bold',
                         textDecorationLine: 'underline',
-                        fontSize: 16}}>
+                        fontSize: 16
+                    }}
+                >
                     PROCURAR POR MARCAS
                 </Text>
             </Pressable>
@@ -109,11 +124,16 @@ export default function CarList({ navigation }: Props) {
                     {Object.entries(makes).map(([label, value]) => (
                         <Pressable
                             key={label}
-                            onPress={() => setFilter(value.filter)}
+                            onPress={() =>
+                                setFilter(value.filter)
+                            }
                             style={[
                                 styles.checkbox,
                                 {
-                                    opacity: filter === value.filter ? 1 : 0.3
+                                    opacity:
+                                        filter === value.filter
+                                            ? 1
+                                            : 0.3
                                 }
                             ]}
                         >
@@ -126,7 +146,9 @@ export default function CarList({ navigation }: Props) {
                             />
                         </Pressable>
                     ))}
+
                 </View>
+
             )}
 
             <View style={styles.carOptions}>
@@ -135,45 +157,95 @@ export default function CarList({ navigation }: Props) {
                     contentContainerStyle={{
                         gap: 20
                     }}
-                    keyExtractor={(item) => item.id.toString()}
+
+                    keyExtractor={(item) =>
+                        item.id.toString()
+                    }
+
                     renderItem={renderCar}
                     removeClippedSubviews
                     initialNumToRender={5}
                     windowSize={5}
                     maxToRenderPerBatch={5}
+                    onEndReached={() => {
+                        if (
+                            hasNextPage &&
+                            !isFetchingNextPage
+                        ) {
+                            fetchNextPage();
+                        }
+                    }}
+
+                    onEndReachedThreshold={0.5}
+
+                    ListFooterComponent={
+
+                        isFetchingNextPage
+                            ? (
+                                <Text
+                                    style={{
+                                        color: "#fff",
+                                        textAlign: "center",
+                                        marginVertical: 20,
+                                        fontFamily:
+                                            'Montserrat_700Bold'
+                                    }}
+                                >
+                                    Carregando...
+                                </Text>
+                            )
+                            : null
+                    }
                 />
             </View>
-            <View style={{
+
+            <View
+                style={{
                     marginTop: 10,
                     display: 'flex',
                     alignItems: 'center'
-                }}>
-                <Text style={{fontFamily: 'Montserrat_400Regular', fontSize: 12, color: '#FFF'}}>
-                    CONFIRA O LANÇAMENTO DA NOVA RANGER RAPTOR
-                </Text>
-            </View>
-                <Pressable   
+                }}
+            >
+                <Text
                     style={{
-                        display: 'flex',
-                        alignItems: 'center',
+                        fontFamily:'Montserrat_400Regular',
+                        fontSize: 12,
+                        color: '#FFF'
                     }}
-                    onPress={() =>
-                        Linking.openURL(
-                            "https://www.youtube.com/watch?v=3nW3UoOxV3k"
-                        )
-                    }
                 >
-                
+                    CONFIRA O LANÇAMENTO
+                    DA NOVA RANGER RAPTOR
+                </Text>
+
+            </View>
+
+            <Pressable
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+
+                onPress={() =>
+                    Linking.openURL(
+                        "https://www.youtube.com/watch?v=3nW3UoOxV3k"
+                    )
+                }
+            >
+
                 <Image
-                    source={require("../../assets/RangerRaptorTrailer.gif")}
+                    source={
+                        require("../../assets/RangerRaptorTrailer.gif")
+                    }
+
                     style={{
                         width: 310,
                         height: 170,
                         borderRadius: 5,
-
                     }}
                 />
-                </Pressable>
+
+            </Pressable>
+
         </View>
     );
 }
@@ -185,21 +257,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10
     },
-    
     carOptions: {
         display: 'flex',
         height: 500,
         alignItems: "center",
         marginVertical: 10
-        
     },
-
     checkbox: {
         width: 70,
         alignItems: 'center'
-        
     },
-
     options: {
         display: 'flex',
         flexDirection: 'row',

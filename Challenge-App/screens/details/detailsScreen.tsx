@@ -1,11 +1,6 @@
 import { Text, View, ImageBackground, StyleSheet } from "react-native";
 
-import {
-    useFonts,
-    Montserrat_500Medium,
-    Montserrat_700Bold,
-    Montserrat_700Bold_Italic
-} from '@expo-google-fonts/montserrat';
+import {useFonts, Montserrat_500Medium, Montserrat_700Bold, Montserrat_700Bold_Italic} from '@expo-google-fonts/montserrat';
 
 import { getCarDetails } from "../../hooks/getCarDetail";
 import { useCar } from "../../context/CarProvider";
