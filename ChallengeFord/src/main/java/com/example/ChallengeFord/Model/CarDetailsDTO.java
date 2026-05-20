@@ -22,6 +22,8 @@ public class CarDetailsDTO {
 
     private Integer preco;      // msrp
 
+    private Integer year;        // year
+
     // Features não disponíveis na CAR API (mantidas para futuro/UI)
     private Double zeroACem;
     private String amortecedores;

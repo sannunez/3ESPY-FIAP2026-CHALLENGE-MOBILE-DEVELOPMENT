@@ -24,6 +24,9 @@ public class CarDetailsResponse {
     // Preco
     private Integer msrp;
 
+    // Ano
+    private Integer year;
+
     // Transmicao
     private List<Transmission> transmissions;
 

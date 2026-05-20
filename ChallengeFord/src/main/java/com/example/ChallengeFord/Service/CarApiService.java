@@ -34,6 +34,7 @@ public class CarApiService {
         dto.setMake(api.getMake());
         dto.setModel(api.getModel());
         dto.setTrim(api.getTrim());
+        dto.setYear(api.getYear());
 
         // ENGINE
         if (api.getEngines() != null && !api.getEngines().isEmpty()) {

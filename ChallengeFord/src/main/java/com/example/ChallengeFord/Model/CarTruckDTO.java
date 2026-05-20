@@ -12,5 +12,6 @@ public class CarTruckDTO {
     private String model;
     private String trim;
     private String type;
+    private Integer year;
 
 }
