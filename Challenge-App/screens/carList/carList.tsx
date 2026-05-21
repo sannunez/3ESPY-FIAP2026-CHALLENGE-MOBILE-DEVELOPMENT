@@ -22,7 +22,7 @@ export default function CarList({ navigation }: Props) {
 
     const [filter, setFilter] = useState("");
 
-    const {data, fetchNextPage, hasNextPage, isFetchingNextPage} = getCarTruck(filter);
+    const {data, fetchNextPage, hasNextPage, isFetchingNextPage, error} = getCarTruck(filter);
 
     const { setSelectedCarId } = useCar();
 
@@ -94,6 +94,16 @@ export default function CarList({ navigation }: Props) {
         Montserrat_400Regular,
         Montserrat_700Bold
     });
+
+    if (error) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center' }]}>
+                <Text style={{ color: '#888', fontSize: 14, fontFamily: 'Montserrat_400Regular' }}>
+                    Não foi possível carregar os veículos.
+                </Text>
+            </View>
+        );
+    }
 
     if (!fontsLoaded) {
         return null;

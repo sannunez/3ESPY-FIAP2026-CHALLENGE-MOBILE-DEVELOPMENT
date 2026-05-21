@@ -9,7 +9,7 @@ export default function Details() {
 
     const { selectedCarId } = useCar();
 
-    const { data, isLoading } = getCarDetails(selectedCarId!);
+    const { data, isLoading, error } = getCarDetails(selectedCarId!);
 
     const [fontsLoaded] = useFonts({
         Montserrat_500Medium,
@@ -39,6 +39,14 @@ export default function Details() {
         return (
             <View style={styles.container}>
                 <Text style={styles.header_text}>Carregando...</Text>
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View style={[styles.container, { backgroundColor: '#171818' }]}>
+                <Text style={{ color: '#888', fontSize: 14 }}>Não foi possível carregar os detalhes.</Text>
             </View>
         );
     }
