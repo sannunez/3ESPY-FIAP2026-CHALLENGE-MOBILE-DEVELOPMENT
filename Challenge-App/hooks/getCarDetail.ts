@@ -10,11 +10,13 @@ const fetchCarDetails = async (id: number): Promise<CarDetailsDTO> => {
 }
 
 export function getCarDetails(id: number){
+    // Guarda: só envia a requisição se o id for um inteiro positivo — evita chamadas malformadas à API
+    const isValidId = Number.isInteger(id) && id > 0;
 
     return useQuery({
         queryFn: () => fetchCarDetails(id),
         queryKey: ["car-details", id],
-        enabled: !!id,
+        enabled: isValidId,
         retry: 2
     });
 }
